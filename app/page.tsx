@@ -1,101 +1,166 @@
-import Image from "next/image";
+"use client";
+
+import { Card } from "@/components/ui/card";
+import { useState } from "react";
+import { FaTwitter, FaLinkedin } from "react-icons/fa";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [username, setUsername] = useState("");
+  interface GitHubData {
+    name: string;
+    public_repos: number;
+    followers: number;
+    following: number;
+    total_stars: number;
+    total_forks: number;
+    total_commits: number;
+    most_used_languages: string;
+    fun_highlights: {
+      estimated_ctrl_c_v: number;
+      estimated_debug_hours: number;
+      estimated_bug_cry_hours: number;
+    };
+    user_tier: string;
+  }
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const [data, setData] = useState<GitHubData | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const fetchGitHubWrap = async () => {
+    if (!username) return;
+
+    setLoading(true);
+    setError(null);
+    setData(null);
+
+    try {
+      const response = await fetch(`/api/${username}`);
+      if (!response.ok) {
+        throw new Error("Failed to fetch GitHub Wrap");
+      }
+      const fetchedData = await response.json();
+      setData(fetchedData);
+    } catch (err) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("An unknown error occurred");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="flex flex-col h-screen justify-center items-center bg-gradient-to-r from-blue-900 via-purple-800 to-indigo-900 text-white px-4 gradient-animation">
+      <h1 className="text-5xl md:text-6xl mb-8 gradient-text font-bold text-center gradient-animation">
+        GitHub Wrapped
+      </h1>
+      <div className="flex flex-col md:flex-row items-center w-full max-w-lg mb-8">
+        <input
+          type="text"
+          className="flex-1 w-full p-4 text-lg border border-gray-600 rounded-md outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500 mr-0 md:mr-4 mb-4 md:mb-0 text-black"
+          placeholder="Enter GitHub username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+        />
+        <button
+          className="w-full md:w-auto p-4 text-lg bg-purple-600 hover:bg-purple-700 text-white rounded-md transition duration-200 ease-in-out disabled:opacity-50 disabled:cursor-not-allowed"
+          onClick={fetchGitHubWrap}
+          disabled={loading}
+        >
+          {loading ? "Loading..." : "Get Your Wrap"}
+        </button>
+      </div>
+      {error && (
+        <div className="text-red-500 mb-4 bg-red-100 p-4 rounded-md w-full max-w-lg text-center">
+          Error: {error}
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      )}
+      {data && (
+        <div className="max-w-3xl flex justify-center items-center mt-8">
+          <Card className="relative bg-gray-900 text-white shadow-md rounded-lg p-8 w-[400px]">
+            {/* Tier Badge */}
+            <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-purple-600 text-white w-16 h-16 flex justify-center items-center rounded-full text-lg font-bold shadow-lg border-4 border-gray-900">
+              {data.user_tier}
+            </div>
+
+            <div className="text-center mt-8">
+              <h2 className="text-xl font-bold mb-2 uppercase gradient-text gradient-animation">
+                {username} GitHub Wrap
+              </h2>
+              <p className="text-sm mb-4">
+                A snapshot of your year on GitHub. 🚀
+              </p>
+            </div>
+
+            {/* Stats */}
+            <div className="space-y-2">
+              <p>
+                <strong>Name:</strong> {data.name}
+              </p>
+              <p>
+                <strong>Public Repos:</strong> {data.public_repos} 🗂️
+              </p>
+              <p>
+                <strong>Followers:</strong> {data.followers} 🌟
+              </p>
+              <p>
+                <strong>Following:</strong> {data.following} 🌈
+              </p>
+              <p>
+                <strong>Total Stars:</strong> {data.total_stars} ✨
+              </p>
+              <p>
+                <strong>Total Forks:</strong> {data.total_forks} 🌐
+              </p>
+              {/* <p>
+                <strong>Total Commits:</strong> {data.total_commits} 🧑‍💻
+              </p> */}
+              <p>
+                <strong>Favorite Language:</strong> {data.most_used_languages}{" "}
+                💻
+              </p>
+              <p>
+                <strong>Ctrl+C + Ctrl+V Count:</strong>{" "}
+                {data.fun_highlights.estimated_ctrl_c_v} 😂
+              </p>
+              <p>
+                <strong>Debug Hours:</strong>{" "}
+                {data.fun_highlights.estimated_debug_hours} 😅
+              </p>
+              <p>
+                <strong>Bug Cry Hours:</strong>{" "}
+                {data.fun_highlights.estimated_bug_cry_hours} 😭
+              </p>
+              <p>
+                <strong>You got a tier:</strong> {data.user_tier}
+              </p>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="flex justify-center mt-6 space-x-4">
+              <a
+                href={`https://twitter.com/ramxcodes`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-500 hover:text-blue-400 transition"
+              >
+                <FaTwitter size={24} />
+              </a>
+              <a
+                href={`https://www.linkedin.com/in/ramxcodes`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-blue-700 hover:text-blue-600 transition"
+              >
+                <FaLinkedin size={24} />
+              </a>
+            </div>
+          </Card>
+        </div>
+      )}
     </div>
   );
 }
