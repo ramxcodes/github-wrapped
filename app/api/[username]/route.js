@@ -12,19 +12,18 @@ export async function GET(request, { params }) {
   const { username } = params;
 
   try {
-    // Fetch profile data
+
     const profileData = await fetchGitHubData(
       `https://api.github.com/users/${username}`,
       "GitHub user not found"
     );
 
-    // Fetch repositories data
+
     const reposData = await fetchGitHubData(
       `https://api.github.com/users/${username}/repos?per_page=100`,
       "Failed to fetch repositories"
     );
 
-    // Calculate stats
     let totalStars = 0;
     let totalForks = 0;
     let totalCommits = 0; 
