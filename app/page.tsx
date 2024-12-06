@@ -2,7 +2,7 @@
 
 import { Card } from "@/components/ui/card";
 import { useState } from "react";
-import { FaTwitter, FaLinkedin } from "react-icons/fa";
+import { FaTwitter, FaLinkedin, FaGithub } from "react-icons/fa";
 
 export default function Home() {
   const [username, setUsername] = useState("");
@@ -53,14 +53,14 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col h-screen justify-center items-center bg-gradient-to-r from-blue-900 via-purple-800 to-indigo-900 text-white px-4 gradient-animation">
-      <h1 className="text-5xl md:text-6xl mb-8 gradient-text font-bold text-center gradient-animation">
-        GitHub Wrapped
+    <div className="flex flex-col h-screen justify-center items-center bg-gradient-to-r from-blue-950 via-purple-900 to-indigo-950 text-white px-4 gradient-animation"><FaGithub size={40} className="my-2" />
+      <h1 className="text-4xl sm:text-5xl md:text-6xl mb-8 font-bold text-center ">
+       GitHub Wrapped
       </h1>
-      <div className="flex flex-col md:flex-row items-center w-full max-w-lg mb-8">
+      <div className="flex flex-col md:flex-row items-center w-full max-w-lg mb-8 space-y-4 md:space-y-0">
         <input
           type="text"
-          className="flex-1 w-full p-4 text-lg border border-gray-600 rounded-md outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500 mr-0 md:mr-4 mb-4 md:mb-0 text-black"
+          className="flex-1 w-full p-4 text-lg border border-gray-600 rounded-md outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500 text-black"
           placeholder="Enter GitHub username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
@@ -79,15 +79,15 @@ export default function Home() {
         </div>
       )}
       {data && (
-        <div className="max-w-3xl flex justify-center items-center mt-8">
-          <Card className="relative bg-gray-900 text-white shadow-md rounded-lg p-8 w-[400px]">
+        <div className="max-w-3xl flex flex-col items-center mt-8">
+          <Card className="relative bg-gray-900 text-white shadow-md rounded-lg p-8 w-full sm:w-[400px]">
             {/* Tier Badge */}
             <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-purple-600 text-white w-16 h-16 flex justify-center items-center rounded-full text-lg font-bold shadow-lg border-4 border-gray-900">
               {data.user_tier}
             </div>
 
             <div className="text-center mt-8">
-              <h2 className="text-xl font-bold mb-2 uppercase gradient-text gradient-animation">
+              <h2 className="text-lg sm:text-xl font-bold mb-2 uppercase gradient-text gradient-animation">
                 {username} GitHub Wrap
               </h2>
               <p className="text-sm mb-4">
@@ -96,7 +96,7 @@ export default function Home() {
             </div>
 
             {/* Stats */}
-            <div className="space-y-2">
+            <div className="space-y-2 text-sm sm:text-base">
               <p>
                 <strong>Name:</strong> {data.name}
               </p>
@@ -115,12 +115,8 @@ export default function Home() {
               <p>
                 <strong>Total Forks:</strong> {data.total_forks} 🌐
               </p>
-              {/* <p>
-                <strong>Total Commits:</strong> {data.total_commits} 🧑‍💻
-              </p> */}
               <p>
-                <strong>Favorite Language:</strong> {data.most_used_languages}{" "}
-                💻
+                <strong>Favorite Language:</strong> {data.most_used_languages} 💻
               </p>
               <p>
                 <strong>Ctrl+C + Ctrl+V Count:</strong>{" "}
@@ -133,9 +129,6 @@ export default function Home() {
               <p>
                 <strong>Bug Cry Hours:</strong>{" "}
                 {data.fun_highlights.estimated_bug_cry_hours} 😭
-              </p>
-              <p>
-                <strong>You got a tier:</strong> {data.user_tier}
               </p>
             </div>
 
