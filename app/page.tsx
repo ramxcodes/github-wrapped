@@ -53,11 +53,12 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col h-screen justify-center items-center bg-gradient-to-r from-blue-950 via-purple-900 to-indigo-950 text-white px-4 gradient-animation"><FaGithub size={40} className="my-2" />
+    <div className="flex flex-col h-screen justify-center items-center bg-gradient-to-r from-blue-950 via-purple-900 to-indigo-950 text-white px-4 gradient-animation">
+      <FaGithub size={40} className="my-2" />
       <h1 className="text-4xl sm:text-5xl md:text-6xl mb-8 font-bold text-center ">
        GitHub Wrapped
       </h1>
-      <div className="flex flex-col md:flex-row items-center w-full max-w-lg mb-8 space-y-4 md:space-y-0">
+      <div className="flex flex-col md:flex-row items-center w-full max-w-lg mb-8 space-y-4 md:space-y-0 space-x-2">
         <input
           type="text"
           className="flex-1 w-full p-4 text-lg border border-gray-600 rounded-md outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-500 text-black"
@@ -134,6 +135,7 @@ export default function Home() {
 
             {/* Action Buttons */}
             <div className="flex justify-center mt-6 space-x-4">
+              Follow on me : &nbsp;
               <a
                 href={`https://twitter.com/ramxcodes`}
                 target="_blank"
